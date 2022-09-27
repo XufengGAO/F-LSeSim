@@ -23,6 +23,7 @@ from options.train_options import TrainOptions
 from data import create_dataset
 from models import create_model
 from util.visualizer import Visualizer
+import os
 
 if __name__ == '__main__':
     opt = TrainOptions().parse()   # get training options
@@ -52,7 +53,7 @@ if __name__ == '__main__':
                 model.data_dependent_initialize(data)
                 model.setup(opt)
                 model.parallelize()
-                model.print_networks(True)
+                # model.print_networks(True)
             model.set_input(data)         # unpack data from dataset and apply preprocessing
             model.optimize_parameters()   # calculate loss functions, get gradients, update network weights
 

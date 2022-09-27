@@ -121,7 +121,6 @@ class SCModel(BaseModel):
         AtoB = self.opt.direction == 'AtoB'
         self.real_A = input['A' if AtoB else 'B'].to(self.device)
         self.real_B = input['B' if AtoB else 'A'].to(self.device)
-        print('real_A shape', self.real_A.shape)
         if self.opt.isTrain and self.opt.augment:
             self.aug_A = input['A_aug' if AtoB else 'B_aug'].to(self.device)
             self.aug_B = input['B_aug' if AtoB else 'A_aug'].to(self.device)
@@ -231,7 +230,6 @@ class SCModel(BaseModel):
     def Spatial_Loss(self, net, src, tgt, other=None):
         """given the source and target images to calculate the spatial similarity and dissimilarity loss"""
         n_layers = len(self.attn_layers)
-        print('in src', src.shape, tgt.shape)
         feats_src = net(src, self.attn_layers, encode_only=True)
         feats_tgt = net(tgt, self.attn_layers, encode_only=True)
         if other is not None:
@@ -241,7 +239,6 @@ class SCModel(BaseModel):
 
         total_loss = 0.0
         for i, (feat_src, feat_tgt, feat_oth) in enumerate(zip(feats_src, feats_tgt, feats_oth)):
-            print('in loss', feat_src.shape, feat_tgt.shape)
             loss = self.criterionSpatial.loss(feat_src, feat_tgt, feat_oth, i)
             total_loss += loss.mean()
 
